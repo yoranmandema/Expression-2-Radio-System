@@ -16,9 +16,9 @@ if (first() || dupefinished()) {
     RadioNetworkAddress = "RADIOGROUP1"         
         
     PlayList = array(
-        "https://www.youtube.com/watch?v=-0hWUGY5Bfs",
-        "https://www.youtube.com/watch?v=MwEXpP8vZD4",       
-        "https://www.youtube.com/watch?v=OVdWB-MhNxU"
+        #"https://silotowers.weebly.com/uploads/4/0/6/0/40603387/do_you_come_here_often_fernsehen_remake.mp3",
+        "https://cdn.discordapp.com/attachments/603298047560253441/605875276110364673/Noisia_-_The_Hole_Pt._1.mp3",       
+        "https://cdn.discordapp.com/attachments/366306070555262978/626397049251692549/MOFES_-_SUICIDAL_THOUGHTS.mp3"
     )
     
     runOnChat(1)

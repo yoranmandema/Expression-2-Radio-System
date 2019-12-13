@@ -1,5 +1,6 @@
 @name Radio Receiver
-@outputs Stations:table StreamRadio:wirelink
+@inputs StreamRadio:wirelink
+@outputs [Stations CurrentStation]:table CurrentChannel:string
 @persist [Should]:number
 @persist [RadioNetworkAddress CurrentChannel]:string 
 @persist [Stations]:table
@@ -38,9 +39,10 @@ if (first() || dupefinished()) {
     
         
     function onStreamURL (Data:table) {
-        StreamRadio["Stream URL",string] = Data["URL", string]     
-        StreamRadio["Time",number] = Data["TimeOffset", number]     
+        StreamRadio["Stream URL",string] = Data["URL", string]      
+        StreamRadio["Pause",number] = 0
         StreamRadio["Play",number] = 1
+        StreamRadio["Time",number] = Data["TimeOffset", number]    
     } 
     
     function setupDS () {
