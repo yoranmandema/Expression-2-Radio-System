@@ -34,7 +34,7 @@ if (first() || dupefinished()) {
     
     timer("CheckCurrentSong", 1000)
 } elseif (clk("CheckCurrentSong")) {    
-    if (RadioSlave["Ended",number]) {
+    if (RadioSlave["Ended",number] && PlayList:count() > 0) {
         playSongFromPlayList()
     }
 
