@@ -1,4 +1,4 @@
-@name Radio Receiver Tester
+@name Radio Receiver Implementation
 @inputs
 @outputs 
 @persist 
@@ -6,7 +6,12 @@
 
 #include "Radio_Receiver"
 
-if (first() || dupefinished()) {    
+if (first() || dupefinished()) {           
+    ClientData["SteamID",string] = owner():steamID64()
+
+    #Common group used to get info about available radio stations.
+    RadioNetworkAddress = "RADIOGROUP1"
+      
     discoverRadioStations()
     
     timer("SetRandomChannel", 500)

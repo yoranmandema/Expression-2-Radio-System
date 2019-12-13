@@ -8,10 +8,6 @@
 
 if (first() || dupefinished()) {
     ClientData = table()              
-    ClientData["SteamID",string] = owner():steamID64()
-
-    #Common group used to get info about available radio stations.
-    RadioNetworkAddress = "RADIOGROUP1"
 
     dsSetScope(2)
     dsJoinGroup(RadioNetworkAddress)

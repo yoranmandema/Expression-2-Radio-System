@@ -7,6 +7,14 @@
 #include "Radio_Transmitter"
 
 if (first() || dupefinished()) {
+    #This is the radio's unique channel used to send out music.  
+    RadioData["Channel",string] = "Naroii_Beats"         
+    RadioData["Name",string] = "Naroii Beats"
+    RadioData["Description",string] = "Cool beats"
+    
+    #Common group used to get info about available radio stations.
+    RadioNetworkAddress = "RADIOGROUP1"         
+        
     PlayList = array(
         "https://www.youtube.com/watch?v=-0hWUGY5Bfs",
         "https://www.youtube.com/watch?v=MwEXpP8vZD4",       
