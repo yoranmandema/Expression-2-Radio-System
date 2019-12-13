@@ -29,7 +29,8 @@ if (first() || dupefinished()) {
         PlayList:remove(1)     
     }
     
-    playSongFromPlayList()
+    setupDS()
+    playSongFromPlayList() 
     
     timer("CheckCurrentSong", 1000)
 } elseif (clk("CheckCurrentSong")) {    

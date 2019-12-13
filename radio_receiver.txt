@@ -8,11 +8,7 @@
 
 if (first() || dupefinished()) {
     ClientData = table()              
-
-    dsSetScope(2)
-    dsJoinGroup(RadioNetworkAddress)
-    runOnLast(1)
-  
+      
     function discoverRadioStations () {
         Stations = table()
         
@@ -45,8 +41,13 @@ if (first() || dupefinished()) {
         StreamRadio["Stream URL",string] = Data["URL", string]     
         StreamRadio["Time",number] = Data["TimeOffset", number]     
         StreamRadio["Play",number] = 1
-    }  
+    } 
     
+    function setupDS () {
+        dsSetScope(2)
+        dsJoinGroup(RadioNetworkAddress)
+        runOnLast(1)        
+    }    
 } elseif (dsClk("StreamURL")) {
     local Data = dsGetTable()
     

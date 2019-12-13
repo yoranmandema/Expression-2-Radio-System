@@ -11,9 +11,10 @@ if (first() || dupefinished()) {
 
     #Common group used to get info about available radio stations.
     RadioNetworkAddress = "RADIOGROUP1"
-      
-    discoverRadioStations()
     
+    setupDS()      
+    discoverRadioStations()
+
     timer("SetRandomChannel", 500)
 }
 

@@ -8,11 +8,7 @@
 
 if (first() || dupefinished()) {
     RadioData = table()
-    
-    dsSetScope(2)
-    dsJoinGroup(RadioNetworkAddress)  
-    dsJoinGroup(RadioData["Channel",string])  
-    
+        
     function setURL (URL:string, TimeOffset:number) {
         CurrentURL = URL
         
@@ -26,6 +22,14 @@ if (first() || dupefinished()) {
     function setURL (URL:string) {
         setURL(URL, 0)
     }  
+    
+        
+    function setupDS () {
+        dsSetScope(2)
+        dsJoinGroup(RadioNetworkAddress)  
+        dsJoinGroup(RadioData["Channel",string])       
+    } 
+    
 } elseif (dsClk("TuneIn")) {
     local Sender = dsGetSender()      
     local Data = table()
