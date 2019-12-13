@@ -1,0 +1,64 @@
+@name Radio Receiver
+@outputs Stations:table StreamRadio:wirelink
+@persist [Should]:number
+@persist [RadioNetworkAddress CurrentChannel]:string 
+@persist [Stations]:table
+@persist [ClientData CurrentStation]:table
+@trigger 
+
+if (first() || dupefinished()) {
+    ClientData = table()              
+    ClientData["SteamID",string] = owner():steamID64()
+
+    #Common group used to get info about available radio stations.
+    RadioNetworkAddress = "RADIOGROUP1"
+
+    dsSetScope(2)
+    dsJoinGroup(RadioNetworkAddress)
+    runOnLast(1)
+  
+    function discoverRadioStations () {
+        Stations = table()
+        
+        dsSend("Probe",RadioNetworkAddress, ClientData)
+    }
+    
+    function setChannel (Name:string) {
+        
+        #Callback to the current radio station that we're not listening to it anymore.
+        if (CurrentChannel != "") {
+            dsSend("TuneOut",CurrentChannel, ClientData)
+            dsLeaveGroup(CurrentChannel)
+            
+            CurrentStation = table()
+            CurrentChannel = ""
+        }
+        
+        #Try to find and join desired station    
+        if (Stations:exists(Name)) {
+            CurrentStation = Stations[Name,table]            
+            CurrentChannel = CurrentStation["Channel",string]
+            
+            dsJoinGroup(CurrentChannel)
+            dsSend("TuneIn",CurrentChannel, ClientData)
+        }
+    }
+    
+        
+    function onStreamURL (Data:table) {
+        StreamRadio["Stream URL",string] = Data["URL", string]     
+        StreamRadio["Time",number] = Data["TimeOffset", number]     
+        StreamRadio["Play",number] = 1
+    }  
+    
+} elseif (dsClk("StreamURL")) {
+    local Data = dsGetTable()
+    
+    "onStreamURL"(Data)
+} elseif (dsClk("ProbeBack")) {
+    local Radio = dsGetTable()
+        
+    Stations[Radio["Name",string],table] = Radio
+} elseif (last()) {
+    setChannel("")
+}

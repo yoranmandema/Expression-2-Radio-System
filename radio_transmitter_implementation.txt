@@ -1,0 +1,41 @@
+@name Radio Transmitter Implementation
+@inputs 
+@outputs PlayList:array
+@persist PlayList:array
+@trigger RadioSlave
+
+#include "Radio_Transmitter"
+
+if (first() || dupefinished()) {
+    PlayList = array(
+        "https://www.youtube.com/watch?v=-0hWUGY5Bfs",
+        "https://www.youtube.com/watch?v=MwEXpP8vZD4",       
+        "https://www.youtube.com/watch?v=OVdWB-MhNxU"
+    )
+    
+    runOnChat(1)
+    
+    function playSongFromPlayList() {
+        setURL(PlayList[1,string])
+        
+        PlayList:remove(1)     
+    }
+    
+    playSongFromPlayList()
+    
+    timer("CheckCurrentSong", 1000)
+} elseif (clk("CheckCurrentSong")) {    
+    if (RadioSlave["Ended",number]) {
+        playSongFromPlayList()
+    }
+
+    timer("CheckCurrentSong", 1000)
+} elseif (chatClk(owner())) {
+    local LastSaid = lastSaid()
+    
+    if (LastSaid:find("!add") == 1) { 
+        PlayList:pushString(LastSaid:sub(5):trim())
+        
+        hideChat(1)
+    }    
+}

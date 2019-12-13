@@ -1,0 +1,55 @@
+@name Radio Transmitter
+@inputs RadioSlave:wirelink
+@outputs Listeners CurrentURL:string
+@persist [Listeners]:number
+@persist [RadioNetworkAddress CurrentURL]:string
+@persist [RadioData]:table
+@trigger 
+
+if (first() || dupefinished()) {
+    RadioData = table()
+    #This is the radio's unique channel used to send out music.  
+    RadioData["Channel",string] = "Naroii_Beats"         
+    RadioData["Name",string] = "Naroii Beats"
+    RadioData["Description",string] = "Cool beats"
+    
+    #Common group used to get info about available radio stations.
+    RadioNetworkAddress = "RADIOGROUP1"  
+        
+    dsSetScope(2)
+    dsJoinGroup(RadioNetworkAddress)  
+    dsJoinGroup(RadioData["Channel",string])  
+    
+    function setURL (URL:string, TimeOffset:number) {
+        CurrentURL = URL
+        
+        local Data = table()
+        Data["URL",string] = CurrentURL
+        Data["TimeOffset",number] = TimeOffset
+           
+        dsSend("StreamURL", RadioData["Channel",string], Data)
+    }
+        
+    function setURL (URL:string) {
+        setURL(URL, 0)
+    }  
+} elseif (dsClk("TuneIn")) {
+    local Sender = dsGetSender()      
+    local Data = table()
+    Data["URL",string] = CurrentURL
+    Data["TimeOffset",number] = RadioSlave["Time",number]
+       
+    dsSendDirect("StreamURL", Sender, Data)
+        
+    Listeners++
+} elseif (dsClk("TuneOut")) {
+    local Sender = dsGetSender()    
+
+    if (Listeners > 0) {
+        Listeners--
+    }
+} elseif (dsClk("Probe")) {
+    local Sender = dsGetSender()    
+    
+    dsSendDirect("ProbeBack", Sender, RadioData)
+}
